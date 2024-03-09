@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+</head>
+<body>
+    <div class = "container">
+        <div class = "inner" data-aos="zoom-in">
+            <div class="box">
+                <p class="number">
+                    <img src = " " alt = "Tweet" id = "tweetMe" title = "TweetMe"/>
+                </p>
+                <div class ="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" class="quote"></p>
+                    <p class="author" id="author"></p>
+                </div>
+
+                <label class="button">
+                    <p id="newq">New Quotes</p>
+                </label>
+            </div>       
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        const quote = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const New = document.getElementById("newq");
+        const Tweet = document.getElementById("tweetMe");
+        let relData = " ";
+        let quotesData = " ";
+
+        const TweetNow = () =>{
+            let twt = `https://twitter.com/intent/tweet?text=${quotesData.text}`;
+            window.open(twt);
+        }
+
+        const getNewQ = () =>{
+            let rnum  = Math.floor(Math.random()*10);
+            quotesData = relData[rnum];
+            quote.innerText = `${quotesData.text}`;
+            quotesData.author == null ? (author.innerText = "Unknown") : (author.innerText = `${quotesData.author}`);
+        }
+
+        const getquotes = async() =>{
+            const api = "https://type.fit/api/quotes";
+            try{
+                let data = await fetch(api);
+                relData = await data.json();
+                getNewQ();
+            }catch(error){
+            }
+        };
+        Tweet.addEventListener("click", TweetNow);
+        New.addEventListener("click", getNewQ);
+        getquotes();
+    </script>
+</body>
+</html>
